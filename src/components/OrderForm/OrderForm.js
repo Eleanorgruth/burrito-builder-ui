@@ -11,8 +11,19 @@ class OrderForm extends Component {
   }
   handleSubmit = e => {
     e.preventDefault();
-    this.props.addOrder(this.state)
-    this.clearInputs();
+    if(this.state.name && this.state.ingredients.length > 0) {
+      this.props.addOrder(this.state)
+      this.clearInputs();
+    }
+  }
+  giveUserError = () => {
+    if(this.state.name && this.state.ingredients.length > 0) {
+      return
+    } else {
+      return (
+        <p>Please enter a name and select at least one ingredient before clicking Submit.</p>
+      )
+    }
   }
   handleIngredientChange = e => {
     e.preventDefault();
@@ -53,7 +64,7 @@ class OrderForm extends Component {
         { ingredientButtons }
 
         <p>Order: { this.state.ingredients.join(', ') || 'Nothing selected' }</p>
-
+        {this.giveUserError()}
         <button onClick={e => this.handleSubmit(e)}>
           Submit Order
         </button>
