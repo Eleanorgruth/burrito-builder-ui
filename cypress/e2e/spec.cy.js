@@ -60,5 +60,8 @@ describe('Burrito Builder', () => {
     cy.get('[name="sofritas"]').click()
     cy.get(':nth-child(14)')
       .should('contain', 'Order: cilantro, sofritas')
+    cy.get('[name="guacamole"]').click()
+    cy.get(':nth-child(14)')
+      .should('contain', 'Order: cilantro, sofritas, guacamole')
   })
 })
