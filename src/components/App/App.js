@@ -3,6 +3,7 @@ import './App.css';
 import {getOrders} from '../../apiCalls';
 import Orders from '../../components/Orders/Orders';
 import OrderForm from '../../components/OrderForm/OrderForm';
+import { postOrder } from '../../apiCalls';
 
 class App extends Component {
   constructor() {
@@ -18,12 +19,17 @@ class App extends Component {
       .catch(err => console.error('Error fetching:', err));
   }
 
+  addOrder = (newOrder) => {
+    postOrder(newOrder)
+      .then(data => this.setState({orders: [...this.state.orders, data]}))
+  }
+
   render() {
     return (
       <main className="App">
         <header>
           <h1>Burrito Builder</h1>
-          <OrderForm />
+          <OrderForm addOrder={this.addOrder}/>
         </header>
 
         <Orders orders={this.state.orders}/>
