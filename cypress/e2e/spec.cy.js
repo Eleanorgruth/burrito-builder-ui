@@ -1,5 +1,64 @@
-describe('empty spec', () => {
-  it('passes', () => {
-    cy.visit('https://example.cypress.io')
+describe('Burrito Builder', () => {
+  beforeEach(() => {
+    cy.intercept('GET', 'http://localhost:3001/api/v1/orders', {fixture: 'get'})
+    cy.intercept('POST', 'http://localhost:3001/api/v1/orders', {fixture: 'post'})
+    cy.visit('http://localhost:3000/')
+  })
+  it('Should have a title', () => {
+    cy.get('h1').should('contain', "Burrito Builder")
+  })
+  it('should show all the existing orders', () => {
+    cy.get('section > :nth-child(1)')
+      .and('contain', 'Tony')
+      .and('contain', 'beans')
+      .and('contain', 'lettuce')
+      .and('contain', 'carnitas')
+    cy.get('section > :nth-child(2)')
+      .and('contain', 'Jim')
+      .and('contain', 'steak')
+      .and('contain', 'pico de gallo')
+  })
+  it('should have a form with a name input', () => {
+    cy.get('form').should('exist')
+    cy.get('input').should('have.value', '')
+  })
+  it('should have ingredients buttons for all ingredient options', () => {
+    cy.get('[name="beans"]').should('exist')
+    cy.get('[name="steak"]').should('exist')
+    cy.get('[name="carnitas"]').should('exist')
+    cy.get('[name="sofritas"]').should('exist')
+    cy.get('[name="lettuce"]').should('exist')
+    cy.get('[name="queso fresco"]').should('exist')
+    cy.get('[name="pico de gallo"]').should('exist')
+    cy.get('[name="hot sauce"]').should('exist')
+    cy.get('[name="guacamole"]').should('exist')
+    cy.get('[name="jalapenos"]').should('exist')
+    cy.get('[name="cilantro"]').should('exist')
+    cy.get('[name="sour cream"]').should('exist')
+  })
+  it('should list the order items selected', () => {
+    cy.get(':nth-child(14)').should('contain', 'Order: Nothing selected')
+  })
+  it('should give the user instructions to fill out the form', () => {
+    cy.get(':nth-child(15)').should('contain', 'Please enter a name and select at least one ingredient.')
+  })
+  it('should have a submit button', () => {
+    cy.get(':nth-child(16)').should('contain', 'Submit Order')
+  })
+  it('should allow users to add a name to the input', () => {
+    cy.get('input')
+      .should('have.value', '')
+      .type("Test")
+      .should('have.value', 'Test')
+  })
+  it('should allow users to select ingredients, and inform them of their current order', () => {
+    cy.get(':nth-child(14)')
+      .should('contain', 'Order: Nothing selected')
+    cy.get('[name="cilantro"]').click()
+    cy.get(':nth-child(14)')
+      .should('contain', 'Order: cilantro')
+    cy.get('[name="sofritas"]').click()
+    cy.get(':nth-child(14)')
+      .should('contain', 'Order: cilantro, sofritas')
   })
 })

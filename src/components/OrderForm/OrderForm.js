@@ -21,7 +21,7 @@ class OrderForm extends Component {
       return
     } else {
       return (
-        <p>Please enter a name and select at least one ingredient before clicking Submit.</p>
+        <p>Please enter a name and select at least one ingredient.</p>
       )
     }
   }
@@ -43,9 +43,7 @@ class OrderForm extends Component {
         <button
           key={ingredient}
           name={ingredient}
-          onClick={e => {
-            console.log(ingredient)
-            this.handleIngredientChange(e)}}>
+          onClick={e => this.handleIngredientChange(e)}>
           {ingredient}
         </button>
       )
